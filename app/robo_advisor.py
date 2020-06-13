@@ -1,5 +1,6 @@
 # app/robo_advisor.py
 
+import csv
 
 import os
 import requests
@@ -46,8 +47,21 @@ recent_low = min(low_prices)
 #
 # INFO OUTPUTS
 #
+csv_file_path = os.path.join(os.path.dirname(__file__), "..", "data", "prices.csv")
 
-
+with open(csv_file_path, "w") as csv_file: 
+    writer = csv.DictWriter(csv_file, fieldnames=csv_headers)
+    writer.writeheader() 
+    for date in dates:
+        daily_prices = tsd[date]
+        writer.writerow({
+            "timestamp": date,
+            "open": daily_prices["1. open"],
+            "high": daily_prices["2. high"],
+            "low": daily_prices["3. low"],
+            "close": daily_prices["4. close"],
+            "volume": daily_prices["5. volume"]
+        })
 
 print("-------------------------")
 print("SELECTED SYMBOL: XYZ")
