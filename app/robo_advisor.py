@@ -5,6 +5,9 @@ import csv
 import os
 import requests
 import json 
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def to_usd(my_price):
     return "${0:,.2f}".format(my_price)
