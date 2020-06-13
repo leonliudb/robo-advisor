@@ -1,11 +1,32 @@
 # app/robo_advisor.py
 
 
-
+import os
 import requests
+import json 
+
+#
+# INFO INPUTS
+#
+
+api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
+print(api_key)
+
+symbol = "MSFT" 
+request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
+
+response = requests.get(request_url)
+#print(type(response))
+#print(response.status_code)
+#print(response.text)
 
 
 
+
+
+#
+# INFO OUTPUTS
+#
 
 
 
