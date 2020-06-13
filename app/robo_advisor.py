@@ -18,15 +18,18 @@ def to_usd(my_price):
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
 #print(api_key)
 
-symbol = "MSFT" 
-request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
 
-response = requests.get(request_url)
-#print(type(response))
-#print(response.status_code)
-#print(response.text)
+def get_response(symbol):
+    request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
+    response = requests.get(request_url)
+    parsed_response = json.loads(response.text)
+    return parsed_response
 
-parsed_response = json.loads(response.text)
+ 
+symbol = input("Please specify a stock symbol (e.g. AMZN) and press enter: ")
+
+parsed_response = get_response(symbol)
+
 
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
@@ -71,13 +74,14 @@ with open(csv_file_path, "w") as csv_file:
             "volume": daily_prices["5. volume"]
         })
 
+
 # DISPLAY RESULTS
 
 formatted_time_now = time_now.strftime("%Y-%m-%d %H:%M:%S")
 formatted_csv_file_path = csv_file_path.split("..")[1]
 
 print("-------------------------")
-print("SELECTED SYMBOL: XYZ")
+print(f"SYMBOL: {symbol}")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
 print(f"REQUEST AT: {formatted_time_now}")
