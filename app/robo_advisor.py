@@ -1,7 +1,7 @@
 # app/robo_advisor.py
 
+import datetime
 import csv
-
 import os
 import requests
 import json 
@@ -16,7 +16,7 @@ def to_usd(my_price):
 #
 
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
-print(api_key)
+#print(api_key)
 
 symbol = "MSFT" 
 request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
@@ -47,6 +47,9 @@ for date in dates:
 
 recent_high = max(high_prices)
 recent_low = min(low_prices)
+
+time_now = datetime.datetime.now() 
+
 #
 # INFO OUTPUTS
 #
@@ -68,13 +71,16 @@ with open(csv_file_path, "w") as csv_file:
             "volume": daily_prices["5. volume"]
         })
 
+# DISPLAY RESULTS
 
+formatted_time_now = time_now.strftime("%Y-%m-%d %H:%M:%S")
+formatted_csv_file_path = csv_file_path.split("..")[1]
 
 print("-------------------------")
 print("SELECTED SYMBOL: XYZ")
 print("-------------------------")
 print("REQUESTING STOCK MARKET DATA...")
-print("REQUEST AT: 2018-02-20 02:00pm")
+print(f"REQUEST AT: {formatted_time_now}")
 print("-------------------------")
 print(f"LATEST DAY: {last_refreshed}")
 print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
@@ -83,6 +89,8 @@ print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
 print("RECOMMENDATION: BUY!")
 print("RECOMMENDATION REASON: TODO")
+print("-------------------------")
+print(f"WRITING DATA TO CSV: {formatted_csv_file_path}")
 print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
