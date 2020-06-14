@@ -31,15 +31,15 @@ def get_response(symbol):
 
         
 symbol = str(input("Please specify a stock symbol (e.g. AMZN) and press enter: "))
-#if not symbol.isalpha():
-#    print("Sorry, please enter a properly-formed stock symbol like 'MSFT'. Please try again." )
-#    breakpoint
 
 
     
 parsed_response = get_response(symbol)
-
-last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+try:
+    last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
+except KeyError:
+    print("Sorry, couldn't find any trading data for that stock symbol")
+    exit()
 
 tsd = parsed_response["Time Series (Daily)"]
 dates = list(tsd.keys()) 
