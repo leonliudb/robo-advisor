@@ -21,12 +21,22 @@ api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
 
 def get_response(symbol):
     request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
-    response = requests.get(request_url)
-    parsed_response = json.loads(response.text)
-    return parsed_response
+    if symbol.isalpha():
+        response = requests.get(request_url)
+        parsed_response = json.loads(response.text)
+        return parsed_response
+    else:
+        print("Sorry, please enter a properly-formed stock symbol like 'MSFT'. Please try again." )
+        exit()
 
- 
-symbol = input("Please specify a stock symbol (e.g. AMZN) and press enter: ")
+        
+symbol = str(input("Please specify a stock symbol (e.g. AMZN) and press enter: "))
+#if not symbol.isalpha():
+#    print("Sorry, please enter a properly-formed stock symbol like 'MSFT'. Please try again." )
+#    breakpoint
+
+
+    
 parsed_response = get_response(symbol)
 
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
@@ -80,8 +90,6 @@ formatted_time_now = time_now.strftime("%Y-%m-%d %H:%M:%S")
 formatted_csv_file_path = csv_file_path.split("..")[1]
 
 
-#print(float(recent_high) * 0.9)
-
 if float(latest_close) > float(recent_high) * 0.95:
     rec = "SELL"
 elif float(latest_close) < float(recent_low) * 1.1:
@@ -95,7 +103,6 @@ if rec == "BUY":
     reason = "If you are considering buying this stock, now would be a good time as the price is low enough."
 if rec == "HOLD or NO BUY":
     reason = "Neither buying or selling would be a good decision now as we need to wait for a better time."
-
 
 
 print("-------------------------")
@@ -116,3 +123,6 @@ print(f"WRITING DATA TO CSV: {formatted_csv_file_path}")
 print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
+
+
+
