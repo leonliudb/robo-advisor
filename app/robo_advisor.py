@@ -87,7 +87,7 @@ with open(csv_file_path, "w") as csv_file:
 formatted_time_now = time_now.strftime("%Y-%m-%d %H:%M:%S")
 formatted_csv_file_path = csv_file_path.split("..")[1]
 
-if float(latest_close) > float(recent_high) * 0.95:
+if float(latest_close) > float(recent_high) * 0.9:
     rec = "SELL"
 elif float(latest_close) < float(recent_low) * 1.1:
     rec = "BUY"
@@ -95,7 +95,7 @@ else:
     rec = "HOLD or NO BUY"
     
 if rec == "SELL":
-    reason = "If you own this stock and are considering selling it, now would be a good time as the price is high enough."
+    reason = "If you are considering selling this stock, now would be a good time as the price is high enough."
 if rec == "BUY":
     reason = "If you are considering buying this stock, now would be a good time as the price is low enough."
 if rec == "HOLD or NO BUY":
