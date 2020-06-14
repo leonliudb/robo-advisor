@@ -37,11 +37,11 @@ num_characters = sum(c.isalpha() for c in symbol)
 
 parsed_response = get_response(symbol)
 
-try:
-    last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
-except KeyError:
+if str("Error Message") in parsed_response:
     print("Sorry, unable to find any data for this stock symbol. Please try again with a valid stock symbol.")
     exit()
+
+last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
 tsd = parsed_response["Time Series (Daily)"]
 dates = list(tsd.keys()) 
