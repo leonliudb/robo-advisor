@@ -19,9 +19,11 @@ api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
 #print(api_key)
 
 
+
 def get_response(symbol):
     request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
-    if symbol.isalpha():
+    if symbol.isalpha() and \
+        num_characters < 6 :
         response = requests.get(request_url)
         parsed_response = json.loads(response.text)
         return parsed_response
@@ -31,14 +33,14 @@ def get_response(symbol):
 
         
 symbol = str(input("Please specify a stock symbol (e.g. AMZN) and press enter: "))
+num_characters = sum(c.isalpha() for c in symbol)   
 
-
-    
 parsed_response = get_response(symbol)
+
 try:
     last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 except KeyError:
-    print("Sorry, couldn't find any trading data for that stock symbol")
+    print("Sorry, unable to find any data for this stock symbol. Please try again with a valid stock symbol.")
     exit()
 
 tsd = parsed_response["Time Series (Daily)"]
