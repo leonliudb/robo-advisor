@@ -18,8 +18,6 @@ def to_usd(my_price):
 api_key = os.environ.get("ALPHAVANTAGE_API_KEY")
 #print(api_key)
 
-
-
 def get_response(symbol):
     request_url = f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={api_key}"
     if symbol.isalpha() and \
@@ -30,7 +28,6 @@ def get_response(symbol):
     else:
         print("Sorry, please enter a properly-formed stock symbol like 'MSFT'. Please try again." )
         exit()
-
         
 symbol = str(input("Please specify a stock symbol (e.g. AMZN) and press enter: "))
 num_characters = sum(c.isalpha() for c in symbol)   
@@ -48,7 +45,6 @@ dates = list(tsd.keys())
 
 latest_day = dates[0] 
 latest_close = tsd[latest_day]["4. close"]
-
 
 high_prices = []
 low_prices = []
@@ -91,7 +87,6 @@ with open(csv_file_path, "w") as csv_file:
 formatted_time_now = time_now.strftime("%Y-%m-%d %H:%M:%S")
 formatted_csv_file_path = csv_file_path.split("..")[1]
 
-
 if float(latest_close) > float(recent_high) * 0.95:
     rec = "SELL"
 elif float(latest_close) < float(recent_low) * 1.1:
@@ -125,6 +120,5 @@ print(f"WRITING DATA TO CSV: {formatted_csv_file_path}")
 print("-------------------------")
 print("HAPPY INVESTING!")
 print("-------------------------")
-
 
 
