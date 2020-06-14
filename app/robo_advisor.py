@@ -27,9 +27,7 @@ def get_response(symbol):
 
  
 symbol = input("Please specify a stock symbol (e.g. AMZN) and press enter: ")
-
 parsed_response = get_response(symbol)
-
 
 last_refreshed = parsed_response["Meta Data"]["3. Last Refreshed"]
 
@@ -38,6 +36,7 @@ dates = list(tsd.keys())
 
 latest_day = dates[0] 
 latest_close = tsd[latest_day]["4. close"]
+
 
 high_prices = []
 low_prices = []
@@ -80,6 +79,25 @@ with open(csv_file_path, "w") as csv_file:
 formatted_time_now = time_now.strftime("%Y-%m-%d %H:%M:%S")
 formatted_csv_file_path = csv_file_path.split("..")[1]
 
+
+#print(float(recent_high) * 0.9)
+
+if float(latest_close) > float(recent_high) * 0.95:
+    rec = "SELL"
+elif float(latest_close) < float(recent_low) * 1.1:
+    rec = "BUY"
+else:
+    rec = "HOLD or NO BUY"
+    
+if rec == "SELL":
+    reason = "If you own this stock and are considering selling it, now would be a good time as the price is high enough."
+if rec == "BUY":
+    reason = "If you are considering buying this stock, now would be a good time as the price is low enough."
+if rec == "HOLD or NO BUY":
+    reason = "Neither buying or selling would be a good decision now as we need to wait for a better time."
+
+
+
 print("-------------------------")
 print(f"SYMBOL: {symbol}")
 print("-------------------------")
@@ -91,8 +109,8 @@ print(f"LATEST CLOSE: {to_usd(float(latest_close))}")
 print(f"RECENT HIGH: {to_usd(float(recent_high))}")
 print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------")
-print("RECOMMENDATION: BUY!")
-print("RECOMMENDATION REASON: TODO")
+print("RECOMMENDATION:", rec)
+print("RECOMMENDATION REASON:", reason)
 print("-------------------------")
 print(f"WRITING DATA TO CSV: {formatted_csv_file_path}")
 print("-------------------------")
